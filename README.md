@@ -1,63 +1,46 @@
-# Back-end do sistema Minhas Tarefas
+# Back-end do sistema Ajuda Mais
 
-A proposta do **Minhas Tarefas** é ser um sistema simples para o registro de compromissos. A intenção é oferecer ao usuário uma experiência de uso fácil, como se ele estivesse diante de um bloco de papel e uma caneta.
+O sistema **Ajuda Mais** tem o objetivo de gerenciar campanhas de ajuda humanitárias, cadastrando os dados dos abrigos - os locais onde as pessoas são acolhidas - e também os suprimentos que são recebidos nestes abrigos como doação. O problema que o **Ajuda Mais** procura resolver é saber quais abrigos precisam de determinado suprimento básico, por exemplo, água mineral, e quais abrigos, que, porventura tenham recebido uma grande quantidade de doação, neste exemplo, de água mineral, possam repassar esta doação excedente para o abrigo que necessita naquela semana.
 
-Diferente de outras ferramentas mais robustas e com diversos controles e configurações que muitas vezes não são utilizados ou causam confusão em seu uso, o **Minhas Tarefas** organiza as tarefas previstas por categorias e o usuário tem total controle sobre a criação das tarefas e das categorias.
+Seguindo o exemplo, baseado no total de pessoas que estão no abrigo A nesta semana e sabendo via cadastro que cada pessoa consome 21 garrafas de água por semana, o **Ajuda Mais** calcula a quantidade de água que precisa ter em estoque, para saber se tem água suficiente ou não na semana. Supondo que precise de água e outro abrigo B tenha água excedente, esse repasse pode ser viabilizado.
 
 Back-end desenvolvido na linguagem Python com o microframework web Flask, framework ORM SQLAlchemy e banco de dados embutido SQLite3, além de outras bibliotecas do Python.
 
-O front-end que integra o sistema **Minhas Tarefas** foi desenvolvido no formato de Single Page Application (SPA) utilizando HTML, CSS e JavaScript. Possui design responsivo e alguns recursos de acessibilidade, como tags semânticas e textos alternativos nos ícones de interação.
-
-
----
-## Como executar 
-
-Será necessário ter instaladas todas as libs Python listadas no arquivo `requirements.txt`.
-Após clonar o repositório, é necessário ir ao diretório raiz, pelo terminal, para poder executar os comandos descritos abaixo.
-
-> É fortemente indicado o uso de ambientes virtuais do tipo [virtualenv](https://virtualenv.pypa.io/en/latest/installation.html).
-
-```
-(env)$ pip install -r requirements.txt
-```
-
-Este comando instala as dependências/bibliotecas, descritas no arquivo `requirements.txt`.
-
-Para executar a API  basta executar:
-
-```
-(env)$ flask run --host 0.0.0.0 --port 5000
-```
-
-Em modo de desenvolvimento é recomendado executar utilizando o parâmetro reload, que reiniciará o servidor
-automaticamente após uma mudança no código fonte. 
-
-```
-(env)$ flask run --host 0.0.0.0 --port 5000 --reload
-```
-
-Abra o [http://localhost:5000/#/](http://localhost:5000/#/) no navegador para verificar o status da API em execução.
-
+O front-end que integra o sistema **Ajuda Mais** foi desenvolvido no formato de Single Page Application (SPA) utilizando HTML, CSS, JavaScript e Bootstrap v5.3. 
 
 ---
-## Melhorias previstas
+## Arquitetura e requisitos
 
-1) Criação de filtro para exibir na tela "Todas as tarefas":
-    a) todas as tarefas.
-    b) somente as tarefas que não estão concluídas.
-    c) somente as tarefas que estão concluídas.
-    d) tarefas por data prevista.
-    e) tarefas da semana atual.
+É importante ter o Docker instalado, já que a aplicação foi concebida em uma arquitetura de microsserviços, com esta API e o frontend, além da possibilidade de expansão para a inserção de novas funcionalidades e consumo de APIs externas. Nesta versão, é utilizada a API VIACEP, acessível pelo link https://viacep.com.br/ws/01001000/json/ onde o 01001000 é o CEP consultado e trabalhado com as funções Javascript 'pesquisaCep()' e 'meuCallback()' além de outras funções para tratamento dos dados que estão presentes no arquivo 'js/scripts.js'.
 
-2) Criação de nova tela inicial com as tarefas da semana atual e que permita paginação entre a semana anterior e a próxima semana.
+### Diagrama do Ajuda Mais
 
-3) Paginação das listas de tarefas e de categorias com o usuário escolhendo a quantidade de registros que deseja exibir.
+![FluxogramaAjudarMais2](https://github.com/user-attachments/assets/34222858-d2ec-4eea-9039-6f858c609528)
 
-4) Opção para alteração de todos os dados de uma tarefa cadastrada.
+## Como instalar utilizando o Docker
 
-5) Permitir a vinculação entre tarefas criando uma opção de relacionar uma tarefa a outra.
+Este repositório possui um arquivo dockerfile correspondente ao frontend. Antes de criar o container Docker é necessário obter os demais repositórios, pois em cada um haverá um arquivo dockerfile necessário para o docker-compose, que irá orquestrar todos os containeres.
 
-6) Relatórios diversos.
+Além deste repositório, clone também o repositório do frontend ( https://github.com/rlcoelho/ajuda-mais-front-end.git ). Com os dois repositórios em sua máquina, crie uma estrutura de pasta, similar a esta:
 
-7) Serviços de notificações com alertas próximos a data prevista.
+- /MVP2
+  - /mvp_back (onde você irá clonar o https://github.com/rlcoelho/ajuda-mais-back-end.git ) 
+  - /mvp_front (onde você irá clonar o https://github.com/rlcoelho/ajuda-mais-front-end.git ) 
+  - docker-compose.yml ( disponível em: https://github.com/rlcoelho/ajuda-mais-front-end/blob/master/docker-compose.yml )
+
+Se desejar outra estrutura de pastas, você pode editar o arquivo docker-compose.yml para os locais que desejar, apenas localize os termos "build" e substitua os contextos pelas suas pastas.
+
+Com tudo pronto basta acessar a pasta onde está o docker-compose.yml via terminal e, com o docker desktop em execução, rodar o seguinte comando:
+
+`docker-compose up --build`
+
+O esperado é que o back-end rode em localhost na porta 5000: `http://127.0.0.1:5000/` pois todas as rotas apontam para este destino. O front-end está configurado para rodar em localhost na porta 80, que é o padrão do servidor Nginx `http://127.0.0.1/` mas você também pode ajustar para a sua necessidade.
+
+---
+## Passo a passo para utilização do Ajuda Mais pela primeira vez
+
+1. Em primeiro lugar, crie uma nova campanha e depois selecione ela na lista de campanhas.
+2. Após a seleção da campanha, cadastre os abrigos (o sistema redireciona para os abrigos).
+3. Após o cadastro dos abrigos, alimente a base de suprimentos `menu Cadastros, opção Suprimentos' 
+
 
