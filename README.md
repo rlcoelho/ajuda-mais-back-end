@@ -11,7 +11,7 @@ O front-end que integra o sistema **Ajuda Mais** foi desenvolvido no formato de 
 ---
 ## Arquitetura e requisitos
 
-É importante ter o Docker instalado, já que a aplicação foi concebida em uma arquitetura de microsserviços, com esta API e o frontend, além da possibilidade de expansão para a inserção de novas funcionalidades e consumo de APIs externas. Nesta versão, é utilizada a API VIACEP, acessível pelo link https://viacep.com.br/ws/01001000/json/ onde o 01001000 é o CEP consultado e trabalhado com as funções Javascript 'pesquisaCep()' e 'meuCallback()' além de outras funções para tratamento dos dados que estão presentes no arquivo 'js/scripts.js'.
+É importante ter o Docker instalado, já que a aplicação foi concebida em uma arquitetura de microsserviços, com esta API REST e o frontend, além da possibilidade de expansão para a inserção de novas funcionalidades e consumo de APIs externas. Nesta versão, é utilizada a API VIACEP, acessível pelo link https://viacep.com.br/ws/01001000/json/ onde o 01001000 é o CEP consultado e trabalhado com as funções Javascript 'pesquisaCep()' e 'meuCallback()' além de outras funções para tratamento dos dados que estão presentes no arquivo 'js/scripts.js'.
 
 ### Diagrama do Ajuda Mais
 
